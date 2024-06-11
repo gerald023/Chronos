@@ -33,6 +33,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class TimeZoneServiceImpl implements TimeZoneServices {
     private  final TimeZoneRepository timeZoneRepository;
     private  final ForeignTimeZoneRepo foreignTimeZoneRepo;
+
     private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     public TimeZoneServiceImpl(TimeZoneRepository timeZoneRepository, ForeignTimeZoneRepo foreignTimeZoneRepo) {
@@ -102,6 +103,7 @@ public class TimeZoneServiceImpl implements TimeZoneServices {
         String areaTime = ZonedDateTime.now(ZoneId.of(timeZone.getTimeZoneID())).format(formatter);
         timeZone.setCurrentRegionTime(areaTime);
         timeZoneRepository.save(timeZone);
+
         ForeignTimeZones foreignTimeZones = new ForeignTimeZones();
         foreignTimeZones.setRegion(timeZone.getRegion());
 //        if (Objects.equals(foreignTimeZones.getRegion(), timeZone.getRegion())) {

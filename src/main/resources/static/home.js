@@ -70,11 +70,14 @@ const updateAllForeignTime = ()=>{
     axios.put(url)
     .then(res =>{
         console.log(res.data);
-        document.getElementById("addTime").innerHTML = `
+      const foreignClock =  document.getElementById("addTime")
+       foreignClock.innerHTML = `
         <div class="foreignClock">
         <h1 th:text="${res.data.currentRegionTime}"></h1>
         <p th:text="${res.data.region}"></p>
     //   </div>`;
+    foreignClock.innerText = res.data;
+    console.log(res)
     window.location.reload();
     }).catch(err =>{
         console.log(err)
@@ -133,7 +136,7 @@ document.addEventListener("click", function () {
        try{
             const response =  fetch('/api/updateAllForeignTime')
             const data = await (await response).text()
-      
+
                 console.log(data)
 
        }catch (error){
