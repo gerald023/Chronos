@@ -1,5 +1,6 @@
 package com.Chronos.controller;
 
+import com.Chronos.models.ForeignTimeZones;
 import com.Chronos.models.TimeUpdateEmitter;
 import com.Chronos.repository.TimeZoneRepository;
 import com.Chronos.service.implementation.TimeZoneServiceImpl;
@@ -7,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
@@ -60,6 +59,23 @@ private TimeZoneServiceImpl timeZoneService;
 //        return emitter;
 //    }
 
+    @PutMapping("/updateAllForeignTime")
+    public List<ForeignTimeZones> updateAllForeignTime(){
+        List<ForeignTimeZones> ids = timeZoneService.getAllForeignTime();
+        return timeZoneService.updateForeignTimes(ids);
+    }
+    @GetMapping("/allForeign")
+    public List<ForeignTimeZones> getAllForeignTime(){
+
+        return timeZoneService.getAllForeignTime();
+    }
+
+
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteForeignTime(@PathVariable Long id){
+        timeZoneService.deleteForeignTime(id);
+    }
     @PutMapping("/localTime")
     public String localTime(){
         return timeZoneService.localTime();

@@ -19,11 +19,16 @@ public class SeededTimeZones {
             repository.save(new UserTimeZone(null, "Chicago", "America", null, null, recordedAt));
             repository.save(new UserTimeZone(null, "Phoenix", "America", null, null, recordedAt));
             repository.save(new UserTimeZone(null, "Honolulu", "Pacific", null, null, recordedAt));
-
-//            repository.save(new UserTimeZone("Nigeria", "Niger", null));
-//            repository.save(new UserTimeZone( "Uk", "20:30:03", null));
-//            repository.save(new UserTimeZone("Russia", "20:30:40", null));
-//            repository.save(new UserTimeZone("USA", "02:50:40", null));
+            repository.save(new UserTimeZone(null, "Paris", "Europe", null, null, recordedAt));
+            repository.save(new UserTimeZone(null, "Berlin", "Europe", null, null, recordedAt));
+            repository.save(new UserTimeZone(null, "Rome", "Europe", null, null, recordedAt));
+            repository.save(new UserTimeZone(null, "Shanghai", "Asia", null, null, recordedAt));
+            repository.save(new UserTimeZone(null, "Tokyo", "Asia", null, null, recordedAt));
+            repository.save(new UserTimeZone(null, "Jerusalem", "Asia", null, null, recordedAt));
+            repository.save(new UserTimeZone(null, "Hong_Kong", "Asia", null, null, recordedAt));
+            repository.save(new UserTimeZone(null, "Johannesburg", "Africa", null, null, recordedAt));
+            repository.save(new UserTimeZone(null, "Lagos", "Africa", null, null, recordedAt));
+            repository.save(new UserTimeZone(null, "Kolkata", "Asia", null, null, recordedAt));
         };
     }
 }

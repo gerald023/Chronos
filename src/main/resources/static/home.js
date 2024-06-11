@@ -1,10 +1,13 @@
 function startClock() {
     // setInterval(updateClock, 1000);  
     setInterval(addTime, 1000);
+    setInterval(updateAllForeignTime, 1000);
+    setInterval(getAllForeignTime, 1000);
     // setInterval(getForeignTime, 1000)
     // getFromDb()
     // getForeignTime()
-  
+//   setInterval(updateAllForeignTime, 1000);
+//   setInterval(getForeignTime, 1000);
 }
 document.addEventListener("DOMContentLoaded", startClock)
 
@@ -32,48 +35,70 @@ function getLocalTime() {
     });
     
 }
-// function getFromDb() {
-//     axios.get("/api/newTime/1")
-//     .then(response => {
-//         document.getElementById('fromDb').innerText = response.data;
-//         console.log(response.data);
-//     })
-//     .catch(error => {
-//         document.getElementById('fromDb').innerText = 'Error fetching local fromDb';
-//         console.error('There was an error fetching the fromDb!', error);
-//     });
-    
-// }
-
-
-
-
-console.log(selector.value);
 
 
 function getForeignTime() {
-    // const selectedValue = selector.value;
     const selector = document.getElementById("selector").value
 
     const url = `/api/foreignTime/${selector}`;
     axios.put(url)
     .then(response => {
-        document.getElementById('foreignTime').innerHTML += `
-        <div class="newTimes">
-            <h1 th:text="">${response.data}</h1>
-        </div>
-    `;
+        // window.location.reload();
+        updateAllForeignTime()
+        console.log(response.data)
+        console.log("foreign time")
+    //          document.getElementById('foreignTime').innerHTML += `
+    //     <div class="newTimes">
+    //         <h1 th:text="">${response.data}</h1>
+    //     </div>
+    // `;
         console.log(response);
+       
     })
     .catch(error => {
-        document.getElementById('foreignTime').innerHTML = 'Error fetching foreignTime';
+        // document.getElementById('foreignTime').innerHTML = 'Error fetching foreignTime';
         console.error('There was an error fetching the foreignTime!', error);
     });
     
+    window.location.reload();
 }
-// getForeignTime()
-// getForeignTime()
-// selector.addEventListener("change", getForeignTime())
+getForeignTime()
+
+const updateAllForeignTime = ()=>{
+    const url = `/api/updateAllForeignTime`
+
+    axios.put(url)
+    .then(res =>{
+        console.log(res.data);
+        document.getElementById("addTime").innerHTML = `
+        <div class="foreignClock">
+        <h1 th:text="${res.data.currentRegionTime}"></h1>
+        <p th:text="${res.data.region}"></p>
+    //   </div>`;
+    window.location.reload();
+    }).catch(err =>{
+        console.log(err)
+    })
+}
+
+updateAllForeignTime();
+
+
+const getAllForeignTime = ()=>{
+    const url = `/api/allForeign`
+
+    axios.get(url)
+    .then(res =>{
+        console.log(res);
+        document.getElementById("addTime").innerHTML = `
+        <div class="foreignClock">
+        <h1 th:text="${res.data.currentRegionTime}"></h1>
+        <p th:text="${res.data.region}"></p>
+      </div>`;
+    }).catch(err =>{
+        console.log(err)
+    })
+}
 
 // function updateClock() {
 //     var now = new Date();
@@ -101,25 +126,24 @@ async function fetchDate() {
         document.getElementById('date').innerText = 'Error fetching date';
     }
 }
-// async function fetchTime() {
-// try {
-//   const response = await fetch('/api/times');
-//   if (response.ok) {
-//       const time = await response.text();
-//       document.getElementById('timer').innerText = time;
-//   } else {
-//       document.getElementById('timer').innerText = 'Error fetching time';
-//   }
-// } catch (error) {
-//   document.getElementById('timer').innerText = 'Error fetching time';
-// }
-// }
 
-// function updateTime() {
-// fetchTime();
-// fetchDate();
-// setTimeout(updateTime, 1000);
-// // Update every second
-// }
 
-// updateTime();
+document.addEventListener("click", function () {
+    async function updateTimes() {
+       try{
+            const response =  fetch('/api/updateAllForeignTime')
+            const data = await (await response).text()
+      
+                console.log(data)
+
+       }catch (error){
+         console.error('Error fetching times:', error)
+       }
+    }
+
+    // Initial update
+    updateTimes();
+
+    // Update every second
+    setInterval(updateTimes, 1000);
+})

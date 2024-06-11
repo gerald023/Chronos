@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>TimeZones</title>
   <link rel="stylesheet" href="/home.css">
   <!-- Tailwind -->
   <!-- <script src="https://cdn.tailwindcss.com"></script>
@@ -25,7 +25,7 @@
       </div>
       <div class="location">
         <i class="fa-solid fa-earth-americas"></i>
-        <h1 id="country"></h1>
+        <h1 id="">World Time</h1>
       </div>
       <div class="select">
         <form action="" id="regionForm">
@@ -44,25 +44,25 @@
 </nav>
 
 <div class="timeBanner">
-    <div>
-      <!-- <h1 class="showTime"><span id="timer" th:text="${ @timeController.getCurrentTime() }"></span></h1> -->
-      <h1 id="fromDb"></h1>
-      <h1 th:text="${ @timeController.updateTime() }" style="color: green;">hello</h1>
-    </div>
+  
  
-    <div>
+    <div class="localtime">
       <h1 class="showTime"><span id="newTimer" style="color: red;" th:text="${ @timeController.localTime() }"></span></h1>
     </div>
     <div>
       <h1 class="showDate"><span id="date" th:text="${ @timeController.getToday() }"></span></h1>
     </div>
+   
     <div id="foreignTime">
-      
-    </div>
-    <div>
-      <!-- <h1 class="text-4xl font-bold "><span id="date" th:text="${ @timeController.getToday() }"></span></h1> -->
+      <div  class="usTime" id="addTime" th:each="foreigntime: ${ @timeController.updateAllForeignTime() }">
+        <div class="foreignClock">
+          <h1 th:text="${foreigntime.currentRegionTime}"></h1>
+          <p th:text="${foreigntime.region}"></p>
+        </div>
+      </div>
     </div>
 </div>
+
 
 
 <table class="table">
@@ -70,20 +70,19 @@
   <tr>
 
     <th scope="col">Id</th>
-    <th scope="col">User name</th>
     <th scope="col">Country</th>
+    <th scope="col">Region</th>
     <th scope="col">Time</th>
     <th scope="col">Registered at</th>
   </tr>
   </thead>
   <tbody>
-  <tr th:each="timezone : ${timezones}">
-    <th scope="row" th:text="${timezone.id}"></th>
-    <!-- <td th:text="${timezone.userName}"></td> -->
-    <td th:text="${timezone.country}"></td>
-    <td th:text="${timezone.timeZoneID}"></td>
-    <td th:text="${timezone.recordedAt}"></td>
-<!--    <td th:text="${timezone.brand}"></td>-->
+  <tr th:each="foreigntime: ${ @timeController.getAllForeignTime() }">
+    <th scope="row" th:text="${foreigntime.id}"></th>
+    <th th:text="${foreigntime.country}"></th>
+    <td th:text="${foreigntime.region}"></td>
+    <td th:text="${foreigntime.currentRegionTime}"></td>
+    <!-- <td th:text="${foreigntime.recordedAt}"></td> -->
   </tr>
   </tbody>
 </table>
