@@ -1,32 +1,17 @@
 package com.Chronos.service.implementation;
-
 import com.Chronos.models.ForeignTimeZones;
-import com.Chronos.models.TimeUpdateEmitter;
 import com.Chronos.models.UserTimeZone;
 import com.Chronos.repository.ForeignTimeZoneRepo;
 import com.Chronos.repository.TimeZoneRepository;
 import com.Chronos.service.TimeZoneServices;
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
-import java.lang.reflect.Array;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
-
 @Service
 //@AllArgsConstructor
 @Configuration
@@ -49,15 +34,13 @@ public class TimeZoneServiceImpl implements TimeZoneServices {
         String clock;
         timeZone.setCountry("Local Time");
         timeZone.setRecordedAt(currentTime);
-//        timeZone.setUserName("John Doe");
-
         if (currentTime.getHour() > 11){
              clock = currentTime.format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "pm";
             timeZone.setTimeZoneID(clock);
             return clock;
         }
         if (currentTime.getHour() == 0){
-             clock = currentTime.format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "u be winch";
+             clock = currentTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
             timeZone.setTimeZoneID(clock);
             return clock;
         }
@@ -67,13 +50,7 @@ public class TimeZoneServiceImpl implements TimeZoneServices {
         return clock;
     }
 
-    @Override
-    public List<UserTimeZone> seededData() {
-        List<UserTimeZone> timeZones = Arrays.asList(
-//                new UserTimeZone(1L, )
-        );
-        return null;
-    }
+
 
     @Override
     public String updateTime(Long id) {
@@ -106,14 +83,6 @@ public class TimeZoneServiceImpl implements TimeZoneServices {
 
         ForeignTimeZones foreignTimeZones = new ForeignTimeZones();
         foreignTimeZones.setRegion(timeZone.getRegion());
-//        if (Objects.equals(foreignTimeZones.getRegion(), timeZone.getRegion())) {
-//            foreignTimeZones.setIsContained(true);
-//            return "time already exists";
-//        }
-//        if (foreignTimeZoneRepo.findByTimeZoneID(foreignTimeZones.getTimeZoneID())) {
-//            foreignTimeZones.setIsContained(true);
-//            return "time already exists";
-//        }
         foreignTimeZones.setCountry(timeZone.getCountry());
         foreignTimeZones.setCurrentRegionTime(timeZone.getCurrentRegionTime());
         foreignTimeZones.setTimeZoneID(timeZone.getTimeZoneID());
@@ -149,36 +118,6 @@ public class TimeZoneServiceImpl implements TimeZoneServices {
         return timeZoneRepository.findAll();
     }
 
-
-    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-
-    @PostConstruct
-    public void start() {
-        // Initialize the scheduler or other resources if needed
-    }
-
-    @PreDestroy
-    public void stop() {
-        scheduler.shutdown();
-    }
-
-    public AtomicReference<String> startSendingTimeUpdates(TimeUpdateEmitter emitter, TimeZoneRepository repository) {
-        AtomicReference<String> time = null;
-        scheduler.scheduleAtFixedRate(() -> {
-            try {
-                LocalTime currentTime = LocalTime.now();
-                 String  clock = (currentTime.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-                emitter.send(SseEmitter.event().name("time-update").data(clock));
-                time.set(clock);
-//                UserTimeZone timeZone = new UserTimeZone(null, "Nigeria", "John", clock, LocalTime.now());
-//                repository.save(new UserTimeZone(null, "Gerald", "Nigeria", clock, LocalTime.now()));
-            } catch (Exception e) {
-                emitter.completeWithError(e);
-            }
-        }, 0, 1, TimeUnit.SECONDS);
-
-    return time;
-    }
 
 
 

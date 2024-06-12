@@ -22,17 +22,11 @@ public class TimeZoneController {
         this.timeZoneService = timeZoneService;
     }
 
-    @GetMapping("/timezones")
+    @GetMapping
     public String getTimeZoneView(Model model) {
         Iterable<UserTimeZone> timeZones = timeZoneService.getAllTimezones();
         model.addAttribute("timezones", timeZones);
         return "timezones";
     }
 
-
-//    @PostMapping("/add-timezone")
-//    public String addTimeZone(String userId, String timeZoneId) {
-//        timeZoneService.saveProducts(userId, timeZoneId);
-//        return "redirect:/";
-//    }
 }

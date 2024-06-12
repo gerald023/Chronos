@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface TimeZoneServices {
     public String localTime();
-    List<UserTimeZone> seededData();
     public String updateTime(Long id);
     public String getOneTime(Long id);
 

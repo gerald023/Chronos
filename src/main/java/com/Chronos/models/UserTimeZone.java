@@ -20,7 +20,6 @@ public class UserTimeZone {
     private String timeZoneID;
     private String currentRegionTime;
     private LocalTime recordedAt;
-
     public UserTimeZone(Long id, String region, String country, String timeZoneID, String currentRegionTime, LocalTime recordedAt) {
         this.id = id;
         this.region = region;
@@ -29,9 +28,4 @@ public class UserTimeZone {
         this.currentRegionTime = currentRegionTime;
         this.recordedAt = recordedAt;
     }
-
-
-
-
-
 }
